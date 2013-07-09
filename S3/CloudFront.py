@@ -133,7 +133,7 @@ class DistributionConfig(object):
     ##  </Logging>
     ## </DistributionConfig>
 
-    EMPTY_CONFIG = "<DistributionConfig><S3Origin><DNSName/></S3Origin><CallerReference/><Enabled>true</Enabled></DistributionConfig>"
+    EMPTY_CONFIG = "<DistributionConfig><S3Origin><DNSName/></S3Origin><OriginAccessIdentity></OriginAccessIdentity><CallerReference/><Enabled>true</Enabled></DistributionConfig>"
     xmlns = "http://cloudfront.amazonaws.com/doc/%(api_ver)s/" % { 'api_ver' : cloudfront_api_version }
     def __init__(self, xml = None, tree = None):
         if xml is None:
@@ -176,6 +176,7 @@ class DistributionConfig(object):
         ## Retain the order of the following calls!
         s3org = appendXmlTextNode("S3Origin", '', tree)
         appendXmlTextNode("DNSName", self.info['S3Origin']['DNSName'], s3org)
+        ## appendXmlTextNode("OriginAccessIdentity", self.info['S3Origin']['OriginAccessIdentity'], s3org)
         appendXmlTextNode("CallerReference", self.info['CallerReference'], tree)
         for cname in self.info['CNAME']:
             appendXmlTextNode("CNAME", cname.lower(), tree)
